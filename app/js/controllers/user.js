@@ -9,7 +9,15 @@
  */
 
 angular.module('cnodejs.controllers')
-.controller('UserCtrl', function($scope, $rootScope, $log, $stateParams, $state, User) {
+.controller('UserCtrl', function(
+             $scope, 
+             $rootScope, 
+             $log, 
+             $stateParams, 
+             $state, 
+             User, 
+             $location
+             ) {
   $log.log('user ctrl');
   var loginName = $stateParams.loginname;
 
@@ -65,5 +73,7 @@ angular.module('cnodejs.controllers')
     if (window.analytics) {
       window.analytics.trackEvent('User', 'logout');
     }
+    
+    $location.path('/topics/all');
   };
 });

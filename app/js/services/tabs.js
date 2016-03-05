@@ -8,6 +8,7 @@
  * Tabs Service of the cnodejs app
  */
 
+
 angular.module('cnodejs.services')
 .factory('Tabs', function() {
   return [
@@ -16,20 +17,24 @@ angular.module('cnodejs.services')
       label: '最新'
     },
     {
-      value: 'share',
-      label: '分享'
+      value: 'good',
+      label: '精华'
     },
     {
-      value: 'ask',
-      label: '问答'
+      value: 'show',
+      label: '爱秀车'
     },
     {
       value: 'job',
-      label: '招聘'
+      label: '提车作业'
     },
     {
-      value: undefined,
-      label: '其他'
+      value: 'driving',
+      label: '自驾游'
+    },
+    {
+      value: 'activity',
+      label: '活动'
     }
   ];
 });

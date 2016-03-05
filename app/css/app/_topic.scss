@@ -7,6 +7,7 @@
   }
   .avatar {
     width: 16px;
+    height: 16px;
     border-radius: 8px;
     vertical-align: middle;
   }
@@ -38,5 +39,45 @@
 .reply-new {
   input {
     background: rgba(0, 0, 0, 0);
+  }
+}
+
+
+.assets-content {
+  line-height: 2em;
+  margin-bottom: 13px;
+  overflow: hidden;
+}
+.assets-inner {
+  
+  clear: both;
+  background: #d4d4d4;
+  &.assets-inner-img {
+    text-align: center;
+    > img {
+      display: inline-block;
+      float: left;
+      clear: both;
+    }
+  }
+  &.assets-inner-text {
+    background: transparent;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    > p {
+      line-height: 1.6em;
+    }
+  }
+  &.assets-inner-video {
+    text-align: center;
+  }
+  .assets-dec {
+    clear: both;
+    background: #323436;
+    font-size: 14px;
+    padding: 8px;
+    text-align: left;
+    color: #fff;
+    line-height: 1.6em;
   }
 }

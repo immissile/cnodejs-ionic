@@ -11,13 +11,29 @@
         <div class="summary">
           <strong>
             <a href="#/user/{{topic.author.loginname}}">
-              <img ng-src="{{topic.author.avatar_url | protocol}}" class="avatar">
+              <img ng-src="{{topic.author.avatar_url}}" class="avatar">
               {{topic.author.loginname}}</a>
           </strong>
           <span class="item-note" am-time-ago="topic.last_reply_at"></span>
         </div>
-        <div class="topic-content" ng-bind-html="topic.content | link">
+        
+        <div class="topic-content">
+          <div class="assets-content" ng-repeat="asset in topic.assets">
+            <div class="assets-inner assets-inner-img" ng-if="asset.type == 'img'">
+              <img src="{{asset.content}}">
+              <div class="assets-dec" 
+                ng-if="asset.description != ''" 
+                ng-bind-html="asset.description|br">
+              </div>
+            </div>
+
+            <div class="assets-inner assets-inner-text" 
+              ng-if="asset.type == 'text' && asset.content != ''">
+              <p ng-bind-html="asset.content | br"></p>
+            </div>
+          </div>
         </div>
+        
       </div>
     </div>
     <ion-list class="replies">
@@ -33,7 +49,7 @@
         暂无评论
       </ion-item>
       <ion-item class="item-avatar" ng-repeat="reply in topic.replies" ng-click="showActions(reply)">
-        <img ng-src="{{reply.author.avatar_url | protocol}}" ng-if="!settings.saverMode">
+        <img ng-src="{{reply.author.avatar_url}}" ng-if="!settings.saverMode">
         <p>
           <a href="#/user/{{reply.author.loginname}}" ng-class="{'bold': reply.author.loginname == topic.author.loginname}">
             {{reply.author.loginname}}

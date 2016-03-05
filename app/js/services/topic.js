@@ -9,7 +9,7 @@
  */
 
 angular.module('cnodejs.services')
-.factory('Topic', function(ENV, $resource, $log, $q, User, Settings) {
+.factory('Topic', function(ENV, $resource, $log, $q, User, Settings, $rootScope) {
   var api = ENV.domain + ENV.api;
   var topic;
   var resource =  $resource(api + '/topic/:id', {
@@ -22,6 +22,10 @@ angular.module('cnodejs.services')
     upReply: {
       method: 'post',
       url: api + '/reply/:replyId/ups'
+    },
+    signin: {
+      method: 'post',
+      url: api + '/signin'
     }
   });
   return {
@@ -38,6 +42,16 @@ angular.module('cnodejs.services')
       return this.get(id);
     },
     get: function(id) {
+      /*
+      resource.signin({}, {
+        loginname: 'missile',
+        password: 'missile'
+      }, function(res){
+        console.log('#####-login-res', res);
+      });
+      return;
+      */
+      //$rootScope.login();
       return resource.get({id: id}, function(response) {
         topic = response.data;
       });

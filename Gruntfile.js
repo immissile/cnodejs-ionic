@@ -52,7 +52,8 @@ module.exports = function (grunt) {
             debug: true,
             // Test user access token
             accessToken: 'f6d0dc46-d66f-45f9-a7e7-4c1be175a08d',
-            domain: 'http://dev.cnodejs.org',
+            //domain: 'http://www.icheshang.com',
+            domain: 'http://127.0.0.1:3000',
             api: '/api/v1'
           }
         }

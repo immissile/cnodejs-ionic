@@ -14,7 +14,7 @@
 
   <ion-side-menu side="left" expose-aside-when="(min-width:736px)">
     <ion-header-bar class="bar-dark">
-      <img id="logo" src="img/cnodejs_light.svg">
+      <img id="logo" src="img/logo@2x.png">
       <h1 ng-if="ENV.name != 'production'" class="title" id="devTag">dev</h1>
     </ion-header-bar>
     <ion-content class="has-header">
@@ -34,6 +34,14 @@
             {{messagesCount > 9 ? 'N' : messagesCount}}
           </span>
         </ion-item>
+        <ion-item menu-close class="item-icon-left" 
+          ng-if="loginName" 
+          ng-click="logout()"
+          href="#/topics/all">
+          <i class="icon ion-log-out"></i>
+          安全退出
+        </ion-item>
+        
         <ion-item class="item-divider">
           板块
         </ion-item>
@@ -49,8 +57,11 @@
       </ion-list>
     </ion-content>
     <ion-footer-bar align-title="left" class="bar-light item-icon-left">
+      <!--
       <i class="icon ion-social-github"></i>
       <h1 class="title">github.com/lanceli</h1>
+      -->
+      <h1 class="title copy-tit">Copyright © 2016 icheshang.com</h1>
     </ion-footer-bar>
   </ion-side-menu>
 </ion-side-menus>

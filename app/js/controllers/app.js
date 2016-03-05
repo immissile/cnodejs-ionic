@@ -9,7 +9,7 @@
  */
 
 angular.module('cnodejs.controllers')
-.controller('AppCtrl', function(ENV, $scope, $log, $timeout, $rootScope, $ionicPopup, $ionicLoading, Tabs, User, Messages, Settings, Push) {
+.controller('AppCtrl', function(ENV, $scope, $log, $timeout, $rootScope, $ionicPopup, $ionicLoading, Tabs, User, Messages, Settings, Push, $ionicModal, $location, $ionicSideMenuDelegate) {
   $log.log('app ctrl');
 
   // get message count
@@ -103,7 +103,9 @@ angular.module('cnodejs.controllers')
   // login action callback
   var loginCallback = function(response) {
     $ionicLoading.hide();
+    $scope.loginModal.hide();
     $scope.loginName = response.loginname;
+    $rootScope.loginName = response.loginname;
     $rootScope.getMessageCount();
   };
 
@@ -139,7 +141,7 @@ angular.module('cnodejs.controllers')
   $scope.tabs = Tabs;
 
   // do login
-  $scope.login = function() {
+  $scope.loginWithCodeScanner = function() {
     if ($scope.processing) {
       return;
     }
@@ -161,6 +163,7 @@ angular.module('cnodejs.controllers')
         ]
       });
     } else {
+      
       // auto login if in debug mode
       if (ENV.debug) {
         $ionicLoading.show();
@@ -193,6 +196,71 @@ angular.module('cnodejs.controllers')
       }
     }
   };
+  
+  // Create the new topic modal that we will use later
+  $ionicModal.fromTemplateUrl('templates/signin.html', {
+    tabs: Tabs,
+    scope: $scope
+  }).then(function(modal) {
+    $scope.loginModal = modal;
+  });
+  
+  // 登录
+  $scope.loginData = {
+    loginname: '',
+    password: '',
+  };
+  $scope.login = function() {
+    $scope.loginModal.show();
+  };
+  $rootScope.login = $scope.login;
+  
+  $rootScope.closeLoginModal = function() {
+    if(window.StatusBar) {
+      StatusBar.styleLightContent();
+    }
+    $scope.loginModal.hide();
+  };
+  
+  $scope.doLogin = function() {
+    $log.log('post login data', $scope.loginData);
+    $ionicLoading.show();
+    $scope.processing = true;
+    /*
+    $timeout(function() {
+      $scope.processing = false;
+    }, 500);
+    */
+    User.getUser($scope.loginData).$promise.then(function(res){
+      $log.log('get login data', res);
+      $scope.processing = false;
+      $ionicLoading.hide();
+      if (res.success) {
+        User.login(res.user.accessToken)
+          .$promise
+          .then(loginCallback, $rootScope.requestErrorHandler());
+      } else {
+        $ionicLoading.show({
+          noBackdrop: true,
+          template: '登录失败: ' + (res.error || '未知错误'),
+          duration: 1500
+        });
+      }
+    });
+  };
+  
+  $scope.$on('modal.hidden', function() {
+    // Execute action
+    console.log('#######- modal.hidden');
+    /*
+    if ($scope.newTopicId) {
+      $timeout(function() {
+        $location.path('/app/topic/' + $scope.newTopicId);
+      }, 300);
+    }
+    */
+  });
+  
   var dologin = function() {
     $scope.processing = true;
     $timeout(function() {
@@ -220,6 +288,26 @@ angular.module('cnodejs.controllers')
     // track event
     if (window.analytics) {
       window.analytics.trackEvent('User', 'scan login');
+    }
+  };
+  
+  /*
+  function ContentController($scope, $ionicSideMenuDelegate) {
+    $scope.toggleLeft = function() {
+      $ionicSideMenuDelegate.toggleLeft();
+    };
+  }
+  */
+  
+  $scope.logout = function() {
+    $log.debug('logout button action');
+    User.logout();
+    $rootScope.$broadcast('logout');
+    $ionicSideMenuDelegate.toggleLeft();
+    
+    // track event
+    if (window.analytics) {
+      window.analytics.trackEvent('User', 'logout');
     }
   };
 });

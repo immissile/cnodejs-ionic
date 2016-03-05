@@ -16,8 +16,20 @@ angular.module('cnodejs.services')
   var userResource = $resource(api + '/user/:loginname', {
     loginname: ''
   });
+  var userLoginRes = $resource(api + '/login', {}, {
+    signin: {
+      method: 'post',
+      url: api + '/signin'
+    }
+  });
   var user = Storage.get(storageKey) || {};
   return {
+    getUser: function (data) {
+      return userLoginRes.signin({}, {
+        loginname: data.loginname,
+        password: data.password
+      });
+    },
     login: function(accesstoken) {
       var $this = this;
       return resource.save({

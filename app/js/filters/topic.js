@@ -47,4 +47,9 @@ angular.module('cnodejs.filters')
       return src;
     }
   };
+})
+.filter('br', function() {
+  return function(str) {
+    return str.replace(/\n/g, '<br>');
+  };
 });
